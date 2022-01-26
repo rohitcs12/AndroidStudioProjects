@@ -1,12 +1,6 @@
 import 'package:covid_app/Services/stateService.dart';
 import 'package:flutter/material.dart';
 
-// import this to be able to call json.decode()
-import 'dart:convert';
-
-// import this to easily send HTTP request
-import 'package:http/http.dart' as http;
-
 void main() {
   runApp(MyApp());
 }
@@ -105,75 +99,5 @@ class _HomePageState extends State<HomePage> {
                                 ),
                 )
         ]));
-  }
-}
-
-class DistrictData extends StatefulWidget {
-  final int text;
-  final String title;
-  DistrictData({Key key, @required this.text, @required this.title})
-      : super(key: key);
-  @override
-  _DistrictDataState createState() => _DistrictDataState();
-}
-
-class _DistrictDataState extends State<DistrictData> {
-  @override
-  Future<List> _district;
-  List list = [1, 2, 3];
-  void initState() {
-    super.initState();
-    _district = StateManager().loadData(widget.text);
-  }
-
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: FutureBuilder(
-          future: _district,
-          builder: (context, AsyncSnapshot<List> snapshot) => snapshot.hasData
-              ? DropdownButton(
-                  onChanged: (value) {
-                    print(value);
-                    setState(() {});
-                  },
-                  items: snapshot.data
-                      .map((e) => DropdownMenuItem<dynamic>(
-                            child: Text(e["district_name"].toString()),
-                            value: e["district_id"],
-                          ))
-                      .toList(),
-                )
-              : CircularProgressIndicator(),
-        ),
-      ),
-      // body: FutureBuilder(
-      //     future: _district,
-      //     builder: (BuildContext ctx, AsyncSnapshot<List> snapshot) =>
-      //     snapshot.hasData
-      //         ?DropdownButton(
-      //           items: _district.,
-      //
-      //         )
-      //
-      //        // ? ListView.builder(
-      //     //   itemCount: snapshot.data.length,
-      //     //   itemBuilder: (BuildContext context, index) => Card(
-      //     //     margin: const EdgeInsets.all(10),
-      //     //     child: ListTile(
-      //     //       contentPadding: const EdgeInsets.all(10),
-      //     //       title: Text(snapshot.data[index]['district_name']),
-      //     //       subtitle: Text(
-      //     //           snapshot.data[index]['district_id'].toString()),
-      //     //     ),
-      //     //   ),
-      //     // )
-      //         : Center(
-      //       child: CircularProgressIndicator(),
-      //     ))
-    );
   }
 }
